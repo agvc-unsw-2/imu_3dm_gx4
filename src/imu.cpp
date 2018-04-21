@@ -743,11 +743,21 @@ void Imu::getDiagnosticInfo(Imu::DiagnosticFields &fields,
     PacketDecoder decoder(packet_);
     BOOST_VERIFY(decoder.advanceTo(FIELD_STATUS_REPORT));
 
-    decoder.extract(1, &fields.modelNumber);
-    decoder.extract(1, &fields.selector);
-    decoder.extract(4, &fields.statusFlags);
-    decoder.extract(2, &fields.imuStreamEnabled);
-    decoder.extract(13, &fields.imuPacketsDropped);
+    uint16_t modelNumber;
+    decoder.extract(1, &modelNumber);
+    fields.modelNumber = modelNumber;
+    uint8_t selector;
+    decoder.extract(1, &selector);
+    fields.selector = selector;
+    uint32_t statusFlags;
+    decoder.extract(4, &statusFlags);
+    fields.statusFlags = statusFlags;
+    uint8_t imuStreamEnabled;
+    decoder.extract(2, &imuStreamEnabled);
+    fields.imuStreamEnabled = imuStreamEnabled;
+    uint32_t imuPacketsDropped;
+    decoder.extract(13, &imuPacketsDropped);
+    fields.imuPacketsDropped = imuPacketsDropped;
   }
 }
 
